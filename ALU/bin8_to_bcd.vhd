@@ -1,0 +1,22 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity bin8_to_bcd is
+    port(
+        bin   : in  std_logic_vector(7 downto 0);
+        tens  : out std_logic_vector(3 downto 0);
+        unit : out std_logic_vector(3 downto 0)
+    );
+end entity;
+
+architecture rtl of bin8_to_bcd is
+    signal valor : integer;
+begin
+
+    valor <= to_integer(unsigned(bin));
+
+    tens  <= std_logic_vector(to_unsigned(valor / 10, 4));
+    unit <= std_logic_vector(to_unsigned(valor mod 10, 4));
+
+end architecture;

@@ -1,0 +1,86 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity TOP_ALU is
+    port(
+        clk     : in  std_logic;
+        sw      : in  std_logic_vector(9 downto 0);
+        segA    : out std_logic_vector(6 downto 0); -- Display alto
+        segB    : out std_logic_vector(6 downto 0)  -- Display bajo
+    );
+end entity;
+
+architecture rtl of TOP_ALU is
+
+    signal A_reg, B_reg     : std_logic_vector(7 downto 0) := (others=>'0');
+    signal Result           : std_logic_vector(7 downto 0);
+    signal flags            : std_logic_vector(3 downto 0);
+
+    signal bin_to_display   : std_logic_vector(7 downto 0);
+
+    signal bcd_tens, bcd_units : std_logic_vector(3 downto 0);
+
+begin
+
+    --------------------------------------------------------------------
+    --  REGISTRO DE A Y B SEGÚN sw(9)
+    --------------------------------------------------------------------
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            if sw(9) = '0' then
+                A_reg <= sw(7 downto 0);
+            else
+                B_reg <= sw(7 downto 0);
+            end if;
+        end if;
+    end process;
+
+    --------------------------------------------------------------------
+    --   ALU
+    --------------------------------------------------------------------
+    U_ALU: entity work.ALU
+        port map(
+            A       => A_reg,
+            B       => B_reg,
+            ALU_Sel => sw(2 downto 0),   -- o como tú lo manejes
+            Result  => Result,
+            NZVC    => flags
+        );
+
+    --------------------------------------------------------------------
+    --  Selección de qué se muestra
+    --  sw(8)=0 → mostrar A y B
+    --  sw(8)=1 → mostrar RESULT
+    --------------------------------------------------------------------
+    bin_to_display <= A_reg    when sw(8)='0' and sw(9)='0' else
+                      B_reg    when sw(8)='0' and sw(9)='1' else
+                      Result;  -- sw(8)=1
+
+    --------------------------------------------------------------------
+    --  CONVERSIÓN BIN → BCD
+    --------------------------------------------------------------------
+    U_BIN2BCD: entity work.bin8_to_bcd
+        port map(
+            bin   => bin_to_display,
+            tens  => bcd_tens,
+            units => bcd_units
+        );
+
+    --------------------------------------------------------------------
+    --  DECODIFICADORES 7 SEGMENTOS
+    --------------------------------------------------------------------
+    U7SEG1: entity work.bcd_to_7seg
+        port map(
+            bcd => bcd_tens,
+            seg => segA
+        );
+
+    U7SEG2: entity work.bcd_to_7seg
+        port map(
+            bcd => bcd_units,
+            seg => segB
+        );
+
+end architecture;
