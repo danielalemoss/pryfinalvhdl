@@ -1,0 +1,227 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity outports_16x8_sync is
+    port(
+        clock    : in  std_logic;
+        reset    : in  std_logic;
+        write_en : in  std_logic;
+        address  : in  std_logic_vector(7 downto 0);
+        data_in  : in  std_logic_vector(7 downto 0);
+
+        port_out_00 : out std_logic_vector(7 downto 0);
+        port_out_01 : out std_logic_vector(7 downto 0);
+        port_out_02 : out std_logic_vector(7 downto 0);
+        port_out_03 : out std_logic_vector(7 downto 0);
+        port_out_04 : out std_logic_vector(7 downto 0);
+        port_out_05 : out std_logic_vector(7 downto 0);
+        port_out_06 : out std_logic_vector(7 downto 0);
+        port_out_07 : out std_logic_vector(7 downto 0);
+        port_out_08 : out std_logic_vector(7 downto 0);
+        port_out_09 : out std_logic_vector(7 downto 0);
+        port_out_0A : out std_logic_vector(7 downto 0);
+        port_out_0B : out std_logic_vector(7 downto 0);
+        port_out_0C : out std_logic_vector(7 downto 0);
+        port_out_0D : out std_logic_vector(7 downto 0);
+        port_out_0E : out std_logic_vector(7 downto 0);
+        port_out_0F : out std_logic_vector(7 downto 0)
+    );
+end entity;
+
+architecture arch_outports of outports_16x8_sync is
+begin
+
+    -- port_out_00
+    process(clock, reset)
+    begin
+        if (reset = '0') then
+            port_out_00 <= x"00";
+        elsif (clock'event and clock='1') then
+            if address = x"E0" and write_en = '1' then
+                port_out_00 <= data_in;
+            end if;
+        end if;
+    end process;
+
+    -- port_out_01
+    process(clock, reset)
+    begin
+        if (reset = '0') then
+            port_out_01 <= x"00";
+        elsif (clock'event and clock='1') then
+            if address = x"E1" and write_en = '1' then
+                port_out_01 <= data_in;
+            end if;
+        end if;
+    end process;
+
+    -- port_out_02
+    process(clock, reset)
+    begin
+        if (reset = '0') then
+            port_out_02 <= x"00";
+        elsif (clock'event and clock='1') then
+            if address = x"E2" and write_en = '1' then
+                port_out_02 <= data_in;
+            end if;
+        end if;
+    end process;
+
+    -- port_out_03
+    process(clock, reset)
+    begin
+        if (reset = '0') then
+            port_out_03 <= x"00";
+        elsif (clock'event and clock='1') then
+            if address = x"E3" and write_en = '1' then
+                port_out_03 <= data_in;
+            end if;
+        end if;
+    end process;
+
+    -- port_out_04
+    process(clock, reset)
+    begin
+        if (reset = '0') then
+            port_out_04 <= x"00";
+        elsif (clock'event and clock='1') then
+            if address = x"E4" and write_en = '1' then
+                port_out_04 <= data_in;
+            end if;
+        end if;
+    end process;
+
+    -- port_out_05
+    process(clock, reset)
+    begin
+        if (reset = '0') then
+            port_out_05 <= x"00";
+        elsif (clock'event and clock='1') then
+            if address = x"E5" and write_en = '1' then
+                port_out_05 <= data_in;
+            end if;
+        end if;
+    end process;
+
+    -- port_out_06
+    process(clock, reset)
+    begin
+        if (reset = '0') then
+            port_out_06 <= x"00";
+        elsif (clock'event and clock='1') then
+            if address = x"E6" and write_en = '1' then
+                port_out_06 <= data_in;
+            end if;
+        end if;
+    end process;
+
+    -- port_out_07
+    process(clock, reset)
+    begin
+        if (reset = '0') then
+            port_out_07 <= x"00";
+        elsif (clock'event and clock='1') then
+            if address = x"E7" and write_en = '1' then
+                port_out_07 <= data_in;
+            end if;
+        end if;
+    end process;
+
+    -- port_out_08
+    process(clock, reset)
+    begin
+        if (reset = '0') then
+            port_out_08 <= x"00";
+        elsif (clock'event and clock='1') then
+            if address = x"E8" and write_en = '1' then
+                port_out_08 <= data_in;
+            end if;
+        end if;
+    end process;
+
+    -- port_out_09
+    process(clock, reset)
+    begin
+        if (reset = '0') then
+            port_out_09 <= x"00";
+        elsif (clock'event and clock='1') then
+            if address = x"E9" and write_en = '1' then
+                port_out_09 <= data_in;
+            end if;
+        end if;
+    end process;
+
+    -- port_out_10
+    process(clock, reset)
+    begin
+        if (reset = '0') then
+            port_out_0A <= x"00";
+        elsif (clock'event and clock='1') then
+            if address = x"EA" and write_en = '1' then
+                port_out_0A <= data_in;
+            end if;
+        end if;
+    end process;
+
+    -- port_out_11
+    process(clock, reset)
+    begin
+        if (reset = '0') then
+            port_out_0B <= x"00";
+        elsif (clock'event and clock='1') then
+            if address = x"EB" and write_en = '1' then
+                port_out_0B <= data_in;
+            end if;
+        end if;
+    end process;
+
+    -- port_out_12
+    process(clock, reset)
+    begin
+        if (reset = '0') then
+            port_out_0C <= x"00";
+        elsif (clock'event and clock='1') then
+            if address = x"EC" and write_en = '1' then
+                port_out_0C <= data_in;
+            end if;
+        end if;
+    end process;
+
+    -- port_out_13
+    process(clock, reset)
+    begin
+        if (reset = '0') then
+            port_out_0D <= x"00";
+        elsif (clock'event and clock='1') then
+            if address = x"ED" and write_en = '1' then
+                port_out_0D <= data_in;
+            end if;
+        end if;
+    end process;
+
+    -- port_out_14
+    process(clock, reset)
+    begin
+        if (reset = '0') then
+            port_out_0E <= x"00";
+        elsif (clock'event and clock='1') then
+            if address = x"EE" and write_en = '1' then
+                port_out_0E <= data_in;
+            end if;
+        end if;
+    end process;
+
+    -- port_out_15
+    process(clock, reset)
+    begin
+        if (reset = '0') then
+            port_out_0F <= x"00";
+        elsif (clock'event and clock='1') then
+            if address = x"EF" and write_en = '1' then
+                port_out_0F <= data_in;
+            end if;
+        end if;
+    end process;
+
+end arch_outports;

@@ -1,0 +1,102 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity TOP is
+    port (
+        clk           : in  std_logic;
+        reset_n       : in  std_logic;
+        write_n       : in  std_logic;
+        sw		       : in  std_logic_vector(8 downto 0);
+
+        Dir1,Dir2,Dat1,Dat2	 : out std_logic_vector (6 downto 0)
+    );
+end entity;
+
+architecture arch_top of TOP is
+
+    signal clock    : std_logic;
+    signal reset    : std_logic;
+    signal write_en : std_logic;
+    signal address  : std_logic_vector(7 downto 0);
+    signal data_in  : std_logic_vector(7 downto 0);
+    signal data_out : std_logic_vector(7 downto 0);
+
+    signal port_out_00 : std_logic_vector(7 downto 0);
+    signal port_out_01 : std_logic_vector(7 downto 0);
+    signal port_out_02 : std_logic_vector(7 downto 0);
+    signal port_out_03 : std_logic_vector(7 downto 0);
+    signal port_out_04 : std_logic_vector(7 downto 0);
+    signal port_out_05 : std_logic_vector(7 downto 0);
+    signal port_out_06 : std_logic_vector(7 downto 0);
+    signal port_out_07 : std_logic_vector(7 downto 0);
+    signal port_out_08 : std_logic_vector(7 downto 0);
+    signal port_out_09 : std_logic_vector(7 downto 0);
+    signal port_out_0A : std_logic_vector(7 downto 0);
+    signal port_out_0B : std_logic_vector(7 downto 0);
+    signal port_out_0C : std_logic_vector(7 downto 0);
+    signal port_out_0D : std_logic_vector(7 downto 0);
+    signal port_out_0E : std_logic_vector(7 downto 0);
+    signal port_out_0F : std_logic_vector(7 downto 0);
+
+begin
+
+    -- conectamos las entradas físicas con las señales internas
+    clock   <= clk;
+    reset   <= reset_n; -- reset activo bajo
+    write_en <= not write_n; -- cambiamos el wr para ser activo en alto
+	
+	-- para multiplexar la entrada entre dato y dirección
+	process(clk)
+	begin
+		 if rising_edge(clk) then
+			  if sw(8) = '0' then
+					address <= sw(7 downto 0);
+			  else
+					data_in <= sw(7 downto 0);
+			  end if;
+		 end if;
+	end process;
+	
+	
+    -- instancia del memory_system
+    u_mem: entity work.memory_system
+        port map (
+            clock => clock,
+            reset => reset,
+            write_en => write_en,
+            address => address,
+            data_in => data_in,
+            data_out => data_out,
+
+            port_out_00 => port_out_00,
+            port_out_01 => port_out_01,
+            port_out_02 => port_out_02,
+            port_out_03 => port_out_03,
+            port_out_04 => port_out_04,
+            port_out_05 => port_out_05,
+            port_out_06 => port_out_06,
+            port_out_07 => port_out_07,
+            port_out_08 => port_out_08,
+            port_out_09 => port_out_09,
+            port_out_0A => port_out_0A,
+            port_out_0B => port_out_0B,
+            port_out_0C => port_out_0C,
+            port_out_0D => port_out_0D,
+            port_out_0E => port_out_0E,
+            port_out_0F => port_out_0F
+        );
+
+	 u_dsp: entity work.hex_display
+		  port map(
+				X => address,
+				Y => data_out,
+				
+				Dir1 => Dir1,
+				Dir2 => Dir2,
+				Dat1 => Dat1,
+				Dat2 => Dat2
+		  );
+	
+	
+end arch_top;
